@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For My kuchupuchu ❤️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;500&family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    
+    <style>
+        :root {
+            --soft-rose: #ff4d6d;
+            --glass: rgba(255, 255, 255, 0.05);
+        }
+
+        body {
+            margin: 0; padding: 0;
+            display: flex; justify-content: center; align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #0f0f0f 0%, #2d0b13 100%);
+            font-family: 'Quicksand', sans-serif;
+            overflow: hidden; color: #fff;
+            cursor: pointer;
+        }
+
+        /* Ambient Glow */
+        body::after {
+            content: ''; position: absolute; width: 300px; height: 300px;
+            background: #880d1e; filter: blur(150px); z-index: -1; opacity: 0.3;
+        }
+
+        .heart-rain {
+            position: fixed; top: -10%; z-index: 0;
+            animation: fall linear forwards; pointer-events: none;
+            color: var(--soft-rose); filter: drop-shadow(0 0 5px var(--soft-rose));
+        }
+
+        @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
+
+        .container {
+            position: relative; z-index: 10;
+            background: var(--glass); backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 50px 30px; border-radius: 40px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+            text-align: center; width: 85%; max-width: 400px;
+        }
+
+        img {
+            width: 140px; height: 140px; object-fit: cover;
+            border-radius: 50%; margin-bottom: 25px;
+            border: 2px solid var(--soft-rose); padding: 5px;
+        }
+
+        h1 {
+            font-family: 'Dancing Script', cursive; 
+            font-size: 2.2rem; margin-bottom: 30px;
+            color: #ffffff;
+            text-shadow: 0 0 15px rgba(255, 77, 109, 0.4);
+        }
+
+        .buttons { display: flex; flex-direction: column; gap: 15px; align-items: center; min-height: 150px; position: relative; }
+
+        button {
+            padding: 12px 40px; font-size: 1rem; border-radius: 50px; cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Quicksand', sans-serif; width: 220px;
+        }
+
+        #yesBtn { background: var(--soft-rose); color: white; border: none; font-weight: 600; z-index: 20; }
+        #yesBtn:hover { transform: scale(1.1); box-shadow: 0 0 25px var(--soft-rose); }
+
+        #noBtn { 
+            background: transparent; color: #aaa; 
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative; /* Normal position initially */
+            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .popup-card {
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            z-index: 100; background: rgba(10, 10, 10, 0.98);
+            padding: 40px; border-radius: 30px; text-align: center;
+            display: none; width: 80%; max-width: 320px;
+            border: 1px solid var(--soft-rose);
+        }
+    </style>
+</head>
+<body onclick="startMusic()">
+
+<audio id="bgMusic" loop>
+    <source src="Until_I_Found_You.mp3" type="audio/mpeg">
+</audio>
+
+<div class="container" id="mainContainer">
+    <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExYjZjYzNkaWk1eW50eWtheWJycGlpajJ3aW9zbXlsaXdnOW1kY3lkZyZlcD12MV9naWZzX3NlYXJjaCZjdD1n/Bv76prPEWdr4nxovaK/giphy.gif">
+    <h1 id="questionText">Jannu , will you be my <span style="color:var(--soft-rose)">Valentine?</span> ❤️</h1>
+    
+    <div class="buttons" id="btnGroup">
+        <button id="yesBtn" onclick="celebrate(event)">YES, Always! ❤️</button>
+        <button id="noBtn" onmouseover="moveButton()" onclick="moveButton()">No 😢</button>
+    </div>
+</div>
+
+<div id="successPopup" class="popup-card">
+    <h2 style="font-family: 'Dancing Script'; color: var(--soft-rose); font-size: 2.2rem;">My Forever! 💞</h2>
+    <p>I am so lucky to have you as my wife meri kuchupuchi jaanuuu<br><br>
+    I promise to keep making you smile like this, every single day my cutu little foodie. i really love more than anything Ankita💞 and i'll always do no matter what💕</p>
+    <div style="font-size: 14px; margin-top: 20px; opacity: 0.5; letter-spacing: 2px;">✨ me and my kuchi puchi ✨</div>
+</div>
+
+<script>
+    const music = document.getElementById('bgMusic');
+    let musicStarted = false;
+
+    function startMusic() {
+        if (!musicStarted) {
+            music.play(); music.volume = 0.4; musicStarted = true;
+        }
+    }
+
+    function createHeart() {
+        const heart = document.createElement('div');
+        heart.classList.add('heart-rain'); heart.innerHTML = '♥'; 
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.animationDuration = Math.random() * 3 + 5 + "s"; 
+        heart.style.opacity = Math.random() * 0.4 + 0.2;
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), 7000);
+    }
+    setInterval(createHeart, 500);
+
+    function moveButton() {
+        const noBtn = document.getElementById('noBtn');
+        const phrases = ["Try again? 😉", "Wrong choice! 😂", "Mrs. No? No way!", "Hehe, nope! ✨", "Nice try! ❤️"];
+        noBtn.innerText = phrases[Math.floor(Math.random() * phrases.length)];
+        
+        // Restricted movement area (stays near the center)
+        const range = 150; 
+        const x = (Math.random() - 0.5) * range * 2;
+        const y = (Math.random() - 0.5) * range * 2;
+        
+        noBtn.style.transform = `translate(${x}px, ${y}px)`;
+    }
+
+    function celebrate(event) {
+        event.stopPropagation();
+        startMusic();
+        music.volume = 0.8;
+
+        confetti({
+            particleCount: 150, spread: 70, origin: { y: 0.6 },
+            colors: ['#ff4d6d', '#ffffff', '#ffb7c5']
+        });
+
+        document.body.style.background = "#000";
+        setInterval(createHeart, 80);
+        document.getElementById('mainContainer').style.opacity = '0.1';
+        document.getElementById('mainContainer').style.filter = 'blur(100px)';
+        
+        setTimeout(() => {
+            document.getElementById('successPopup').style.display = 'block';
+        }, 300);
+    }
+</script>
+
+</body>
+</html>
